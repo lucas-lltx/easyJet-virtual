@@ -79,7 +79,11 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
 
-    <!-- Firebase SDKs -->
+    <!-- React Development and Production bundles - LOADED FIRST -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Firebase SDKs - LOADED BEFORE APP LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -109,9 +113,10 @@
             console.error("Error initializing Firebase:", error);
         }
 
-        // React and ReactDOM loaded globally for simplicity in single file
-        const { useState, useEffect } = React;
-        const { createRoot } = ReactDOM;
+        // React and ReactDOM are now available globally via the unpkg scripts loaded above.
+        // We can directly access them using React.useState, ReactDOM.createRoot etc.
+        const { useState, useEffect } = window.React;
+        const { createRoot } = window.ReactDOM;
 
         // --- Gemini API Setup (not used for current content drafting but can be re-enabled) ---
         // const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"; // Replace with your actual Gemini API key if needed
@@ -787,7 +792,7 @@
                                 <div>
                                     <label htmlFor="eta" className="block text-lg font-medium text-gray-700 mb-2">ETA / Actual Time (Optional):</label>
                                     <input type="text" id="eta" name="eta" value={newLiveFlight.eta} onChange={handleLiveFlightChange} className="w-full p-3 rounded-lg bg-white text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all duration-200" placeholder="e.g., 1h 30m / 14:30 GMT" />
-                                </div>
+                            </div>
                             </div>
                             <div className="flex flex-col sm:flex-row gap-4">
                                 <button type="submit" className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-xl shadow-md transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-gray-100">
@@ -1589,8 +1594,5 @@
         // Render the React App component into the 'root' div
         createRoot(document.getElementById('root')).render(<App />);
     </script>
-    <!-- React Development and Production bundles -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 </body>
 </html>
